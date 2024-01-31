@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
+import CheckBox from "./CheckBox";
 
 interface DialogProps {
   openDialog: boolean;
@@ -36,6 +37,12 @@ const AuthDialog = ({
 }: DialogProps) => {
   const [formData, setFormData] = useState(defaultFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [variant, setVariant] = useState("login");
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
+  const [labelValue, setLabelValue] = useState(false);
+
   const validateFormForRegister = () => {
     const newErrors: Record<string, string> = {};
 
@@ -91,8 +98,6 @@ const AuthDialog = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const [variant, setVariant] = useState("login");
-
   const toggleVariant = useCallback(() => {
     setVariant((currentVariant) =>
       currentVariant === "login" ? "register" : "login"
@@ -100,9 +105,7 @@ const AuthDialog = ({
     setFormData(defaultFormData);
     setErrors({});
   }, []);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirmation, setShowPasswordConfirmation] =
-    useState(false);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (
@@ -124,6 +127,10 @@ const AuthDialog = ({
     setFormData(defaultFormData);
   }, [variantValue]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLabelValue(event.target.checked);
+  };
+
   const singUpHandler = () => {
     if (validateFormForRegister()) {
       console.log("validate it");
@@ -134,6 +141,7 @@ const AuthDialog = ({
       console.log("validate it");
     }
   };
+  console.log(labelValue);
   return (
     <Dialog
       open={openDialog}
@@ -236,11 +244,12 @@ const AuthDialog = ({
           {variant === "register" && (
             <Box sx={{ width: "100%" }}>
               <TextField
+                color="secondary"
                 label={"Username"}
                 id={"username"}
                 type={"username"}
                 sx={{
-                  width: { xs: "100%", lg: "48%" },
+                  width: { xs: "100%", lg: "100%" },
                 }}
                 value={formData.username}
                 onChange={(e: any) => {
@@ -253,6 +262,7 @@ const AuthDialog = ({
           )}
           <Box sx={{ width: "100%" }}>
             <TextField
+              color="secondary"
               label={"Email"}
               id={"email"}
               type={"email"}
@@ -261,7 +271,7 @@ const AuthDialog = ({
                 setFormData({ ...formData, email: e.target.value });
               }}
               sx={{
-                width: { xs: "100%", lg: "48%" },
+                width: { xs: "100%", lg: "100%" },
               }}
               error={!!errors.email}
               helperText={errors.email}
@@ -269,9 +279,10 @@ const AuthDialog = ({
           </Box>
           <Box sx={{ width: "100%" }}>
             <TextField
+              color="secondary"
               id="outlined-adornment-password-1"
               sx={{
-                width: { xs: "100%", lg: "48%" },
+                width: { xs: "100%", lg: "100%" },
               }}
               InputProps={{
                 endAdornment: (
@@ -301,9 +312,10 @@ const AuthDialog = ({
           {variant === "register" && (
             <Box sx={{ width: "100%" }}>
               <TextField
+                color="secondary"
                 id="outlined-adornment-password-2"
                 sx={{
-                  width: { xs: "100%", lg: "48%" },
+                  width: { xs: "100%", lg: "100%" },
                 }}
                 InputProps={{
                   endAdornment: (
@@ -336,8 +348,14 @@ const AuthDialog = ({
             </Box>
           )}
         </Box>
-        <Box sx={{ width: "100%", mt: 4 }}>
+        {variant === "register" ? (
+          <CheckBox labelValue={labelValue} handleChange={handleChange} />
+        ) : (
+          <></>
+        )}
+        <Box sx={{ width: "100%", mt: 2 }}>
           <Button
+            disabled={variant === "register" && labelValue === false}
             color={"primary"}
             variant="contained"
             onClick={() => {
