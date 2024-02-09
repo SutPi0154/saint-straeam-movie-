@@ -1,15 +1,17 @@
+import { SnackbarSlice } from "@/types/snackbar";
 import { createSlice } from "@reduxjs/toolkit";
-const initialState = {
+
+const initialState: SnackbarSlice = {
   message: null,
   autoHideDuration: 5000,
   open: false,
   severity: "success",
 };
-const snackbarSlice: any = createSlice({
-  name: "snackbarSlice",
+const snackbarSlice = createSlice({
+  name: "snackbar",
   initialState,
   reducers: {
-    toggleSnackBar: (state, { payload }) => {
+    toggleSnackbar: (state, { payload }) => {
       const { open, autoHideDuration = 5000, message, severity } = payload;
       state.open = true;
       state.message = message;
@@ -25,5 +27,5 @@ const snackbarSlice: any = createSlice({
   },
 });
 
-export const { toggleSnackBar, resetSnackBar } = snackbarSlice.actions;
+export const { toggleSnackbar, resetSnackBar } = snackbarSlice.actions;
 export default snackbarSlice.reducer;

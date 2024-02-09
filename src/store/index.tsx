@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 // ...
 import AuthReducer from "./slice/authSlice";
 import SnackbarReducer from "./slice/snackbarSlice";
+import UserReducer from "./slice/userSlice";
 
 export const store = configureStore({
   reducer: {
     snackbar: SnackbarReducer,
     auth: AuthReducer,
+    user: UserReducer,
   },
 });
 

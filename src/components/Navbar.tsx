@@ -1,41 +1,90 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 import AuthDialog from "./Auth";
+import Logo from "./Logo";
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
   const [openDialog, setOpenDialog] = useState(false);
-  const [variantValue, setVariantValue] = useState("");
-  return (
-    <Box sx={{ color: "white" }}>
-      <Box></Box>
-      <Box></Box>
-      <Box></Box>
-      <Box>
-        <Button
-          onClick={() => {
-            setOpenDialog(true);
-            setVariantValue("register");
-          }}
-        >
-          Sign In
-        </Button>
-      </Box>
-      <Box>
-        <Button
-          onClick={() => {
-            setOpenDialog(true);
-            setVariantValue("login");
-          }}
-        >
-          Login
-        </Button>
-      </Box>
+  const [variant, setVariant] = useState("login");
 
-      <AuthDialog
-        openDialog={openDialog}
-        setOpenDialog={setOpenDialog}
-        variantValue={variantValue}
-      />
+  return (
+    <Box sx={{ mx: 4, pt: 4 }}>
+      <Box
+        sx={{
+          color: "white",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Link href={"/"} style={{ color: "white", textDecoration: "none" }}>
+          <Box sx={{ display: "flex" }}>
+            <Logo />
+            <Typography sx={{ fontSize: 25, fontFamily: "Antonio" }}>
+              Saint Stream
+            </Typography>
+          </Box>
+        </Link>
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 2,
+            alignItems: "center",
+          }}
+        >
+          <Box>
+            <Typography>Home</Typography>
+          </Box>
+          <Box>
+            <Typography>About</Typography>
+          </Box>
+          <Box>
+            <Typography>About</Typography>
+          </Box>
+        </Box>
+        {session ? (
+          <Box>
+            <Button
+              onClick={() => {
+                // setOpenDialog(true);
+                signOut();
+              }}
+            >
+              Logout
+            </Button>
+          </Box>
+        ) : (
+          <Box>
+            <Button
+              onClick={() => {
+                setOpenDialog(true);
+                setVariant("register");
+              }}
+            >
+              Sign Up
+            </Button>
+            <Button
+              onClick={() => {
+                setOpenDialog(true);
+                setVariant("login");
+              }}
+            >
+              Login
+            </Button>
+          </Box>
+        )}
+
+        <AuthDialog
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          variant={variant}
+          setVariant={setVariant}
+        />
+      </Box>
     </Box>
   );
 };

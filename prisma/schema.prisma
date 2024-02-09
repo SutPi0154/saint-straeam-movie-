@@ -14,17 +14,43 @@ model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
   email     String   @unique
-  password  String
+  password  String?
+  role      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Movie {
-  id          Int    @id @default(autoincrement())
-  title       String
-  description String
-  videoUrl    String
-  thumbNail   String
-  genre       String
-  duration    String
+  id                 Int           @id @default(autoincrement())
+  title              String
+  description        String
+  videoUrl           String
+  imageUrl           String
+  duration           String
+  releaseDate        String
+  backgroundImageUrl String
+  isArchived         Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  MovieGerens        MovieGerens[]
+}
+
+model Genre {
+  id          Int           @id @default(autoincrement())
+  name        String
+  isArchived  Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  MovieGerens MovieGerens[]
+}
+
+model MovieGerens {
+  id         Int      @id @default(autoincrement())
+  movie      Movie    @relation(fields: [movieId], references: [id])
+  movieId    Int
+  GerenId    Int
+  Geren      Genre    @relation(fields: [GerenId], references: [id])
+  isArchived Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
