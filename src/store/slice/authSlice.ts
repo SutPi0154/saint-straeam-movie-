@@ -15,7 +15,7 @@ export const registerThunk = createAsyncThunk(
         const response = await fetch(`${config.apiBaseUrl}/signIn`, {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ username, email, password, role: "admin" }),
+          body: JSON.stringify({ username, email, password }),
         });
         const { user } = await response.json();
         console.log(user);
@@ -24,10 +24,10 @@ export const registerThunk = createAsyncThunk(
         const response = await fetch(`${config.apiBaseUrl}/signIn`, {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ username, email, password, role: "user" }),
+          body: JSON.stringify({ username, email, password }),
         });
         const { user } = await response.json();
-        console.log(user);
+        // console.log(user);
         onSuccess && onSuccess();
       }
     } catch (error) {
@@ -48,7 +48,7 @@ export const loginThunk = createAsyncThunk(
           body: JSON.stringify({ email, password, role: "admin" }),
         });
         const user = await response.json();
-        console.log("user,", user);
+        // console.log("user,", user);
         onSuccess && onSuccess();
       } else {
         const response = await fetch(`${config.apiBaseUrl}/signIn`, {

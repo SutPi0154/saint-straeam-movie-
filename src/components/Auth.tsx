@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import CheckBox from "./CheckBox";
 import Logo from "./Logo";
+import SingInGoogle from "./SingInGoogle";
 
 interface DialogProps {
   openDialog: boolean;
@@ -380,7 +381,7 @@ const AuthDialog = ({
             {variant === "login" ? "Login" : "Register"}
           </Button>
         </Box>
-
+        <SingInGoogle />
         <Box
           sx={{
             display: "flex",

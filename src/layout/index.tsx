@@ -1,37 +1,47 @@
+import AdminLayout from "@/components/AdminLayout";
 import Navbar from "@/components/Navbar";
+import User from "@/pages/userPanel";
 import { Box } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 interface Props {
   children: ReactNode;
 }
 const Layout = ({ children }: Props) => {
+  const [admin, setAdmin] = useState<boolean>(false);
   const router = useRouter();
   const { data: session } = useSession();
-  console.log("session", session);
+  const adminPage = router.pathname.includes("/admin");
+
   useEffect(() => {
-    const redirectToAdmin = () => {
-      if (
-        session &&
-        session.user &&
-        session.user.email === "nawram@gmail.com"
-      ) {
+    if (session && session.user) {
+      //@ts-ignore
+      const { role } = session.user;
+      if (role === "ADMIN") {
         if (router.pathname !== "/admin") {
+          setAdmin(true);
           router.push("/admin");
+        } else {
+          setAdmin(false);
         }
       }
-    };
+    }
+    if (!session && !(router.pathname === "/")) {
+      router.push("/");
+    }
+  }, [router, session, admin]);
 
-    // Run the redirection logic once on mount
-    redirectToAdmin();
-  }, [router, session]);
-
-  return (
-    <Box sx={{ height: "100vh", bgcolor: "info.main" }}>
-      <Navbar />
-    </Box>
-  );
+  if (adminPage) {
+    return <AdminLayout>{children}</AdminLayout>;
+  } else {
+    return (
+      <Box sx={{ height: "100vh", bgcolor: "info.main" }}>
+        <Navbar />
+        {children}
+      </Box>
+    );
+  }
 };
 
 export default Layout;

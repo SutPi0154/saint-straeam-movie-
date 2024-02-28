@@ -11,7 +11,7 @@ const Navbar = () => {
   const [variant, setVariant] = useState("login");
 
   return (
-    <Box sx={{ mx: 4, pt: 4 }}>
+    <Box sx={{ mx: 4, pt: 4, flex: "0 0 20vh", height: "20vh" }}>
       <Box
         sx={{
           color: "white",
@@ -50,8 +50,7 @@ const Navbar = () => {
           <Box>
             <Button
               onClick={() => {
-                // setOpenDialog(true);
-                signOut();
+                signOut({ callbackUrl: "/" });
               }}
             >
               Logout

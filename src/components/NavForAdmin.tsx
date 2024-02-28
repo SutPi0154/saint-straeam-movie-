@@ -1,31 +1,19 @@
-import { Box, Button, Divider, Typography } from "@mui/material";
-
-const AdminPage = () => {
+import SearchIcon from "@mui/icons-material/Search";
+import {
+  Box,
+  Divider,
+  IconButton,
+  InputBase,
+  Paper,
+  Typography,
+} from "@mui/material";
+const NavForAdmin = () => {
   return (
-    <>
+    <Box sx={{ width: "80%", alignSelf: "self-start" }}>
       <Box
         sx={{ display: "flex", justifyContent: "space-between", my: 2, mx: 4 }}
       >
         <Box>
-          <Typography sx={{ fontSize: 30 }}>Dashboard</Typography>
-        </Box>
-        <Box>
-          <Button
-            variant="contained"
-            sx={{
-              fontSize: 14,
-              borderRadius: 2,
-              py: 1,
-              fontWeight: 700,
-              "&:hover": {
-                color: "warning.light",
-              },
-            }}
-          >
-            Add Item
-          </Button>
-        </Box>
-        {/* <Box>
           <Box>
             <Typography sx={{ fontSize: 25, fontFamily: "Antonio", mb: 1 }}>
               Catalog
@@ -66,28 +54,13 @@ const AdminPage = () => {
               </IconButton>
             </Paper>
           </Box>
-        </Box> */}
-      </Box>
-      <Divider sx={{ width: "95%" }} />
-
-      <Box sx={{ display: "flex", justifyContent: "center", m: 2 }}>
-        <Box
-          sx={{
-            display: "flex",
-            bgcolor: "warning.main",
-            borderColor: "",
-            width: "100%",
-            justifyContent: "space-around",
-          }}
-        >
-          <Box sx={{ width: "20%", height: 50, bgcolor: "" }}>dfsdfaflj</Box>
-          <Box sx={{ width: "20%", height: 50, bgcolor: "red" }}>dfsdfaflj</Box>
-          <Box sx={{ width: "20%", height: 50, bgcolor: "red" }}>dfsdfaflj</Box>
-          <Box sx={{ width: "20%", height: 50, bgcolor: "red" }}>dfsdfaflj</Box>
         </Box>
       </Box>
-    </>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Divider sx={{ width: "95%" }} />
+      </Box>
+    </Box>
   );
 };
 
-export default AdminPage;
+export default NavForAdmin;

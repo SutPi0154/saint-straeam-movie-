@@ -1,6 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 // ...
+import AppReducer from "./slice/appSlice";
 import AuthReducer from "./slice/authSlice";
+import GenreReducer from "./slice/genreSlice";
+import MovieReducer from "./slice/movieSlice";
 import SnackbarReducer from "./slice/snackbarSlice";
 import UserReducer from "./slice/userSlice";
 
@@ -9,6 +12,9 @@ export const store = configureStore({
     snackbar: SnackbarReducer,
     auth: AuthReducer,
     user: UserReducer,
+    app: AppReducer,
+    movie: MovieReducer,
+    genre: GenreReducer,
   },
 });
 
