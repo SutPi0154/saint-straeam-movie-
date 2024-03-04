@@ -14,6 +14,7 @@ const SingInGoogle = () => {
         sx={{
           display: "flex",
           bgcolor: "primary.dark",
+          borderRadius: 2,
           justifyContent: "center",
           mt: 2,
           alignItems: "center",
@@ -26,7 +27,7 @@ const SingInGoogle = () => {
           sizes="100vw"
           width={0}
           height={0}
-          style={{ width: "5%", height: "5%" }}
+          style={{ width: "4%", height: "4%" }}
         />
         <Typography
           sx={{

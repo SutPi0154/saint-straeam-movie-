@@ -4,7 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Logo from "./Logo";
+import Logo from "../Logo";
 
 const Sidebar = () => {
   const { data: session } = useSession();

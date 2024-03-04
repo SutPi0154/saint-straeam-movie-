@@ -3,6 +3,7 @@ import { config } from "@/utils/config";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setGenres } from "./genreSlice";
 import { setMovies } from "./movieSlice";
+import { setMovieGenres } from "./movieGenresSlice";
 const initialState: AppSlice = {
   init: false,
   isLoading: false,
@@ -12,78 +13,30 @@ export const fetchAppData = createAsyncThunk(
   "app/appSlice",
   async (options: GetAppDataOptions, thunkApi) => {
     const { onSuccess, onError, role } = options;
-    console.log(role, "role form redux");
+    console.log("inside appslice");
     try {
       const appDataUrl = role
         ? `${config.adminApiUrl}/app?role=${role}`
         : `${config.costumerApiUrl}/app`;
       const response = await fetch(appDataUrl);
       const appData = await response.json();
-      //   const {
-      //     locations,
-      //     menuCategories,
-      //     menus,
-      //     menuCategoryMenus,
-      //     addonCategories,
-      //     menuAddonCategories,
-      //     addons,
-      //     tables,
-      //     orders,
-      //     disabledLocationMenus,
-      //     disabledLocationMenuCategories,
-      //     company,
-      //     user,
-      //   } = appData;
-      //   if (tableId) {
-      //     thunkApi.dispatch(setInit(true));
-      //     thunkApi.dispatch(setMenuCategories(menuCategories));
-      //     thunkApi.dispatch(setMenus(menus));
-      //     thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
-      //     thunkApi.dispatch(setAddons(addons));
-      //     thunkApi.dispatch(setAddonCategories(addonCategories));
-      //     thunkApi.dispatch(setTables(tables));
-      //     thunkApi.dispatch(setDisableLocationMenus(disabledLocationMenus));
-      //     thunkApi.dispatch(
-      //       setDisableLocationMenuCategories(disabledLocationMenuCategories)
-      //     );
-      //     thunkApi.dispatch(setMenuAddonCategory(menuAddonCategories));
-      //     thunkApi.dispatch(setOrders(orders));
-      //     thunkApi.dispatch(setCompany(company));
-      //     thunkApi.dispatch(setUser(user));
-      //     onSuccess && onSuccess();
-      //   } else {
 
-      //     thunkApi.dispatch(setLocations(locations));
-      //     if (!localStorage.getItem("selectedLocationId")) {
-      //       localStorage.setItem("selectedLocationId", locations[0].id);
-      //     }
-      //     thunkApi.dispatch(setInit(true));
-      //     thunkApi.dispatch(setLocations(locations));
-      //     thunkApi.dispatch(setMenuCategories(menuCategories));
-      //     thunkApi.dispatch(setMenus(menus));
-      //     thunkApi.dispatch(setMenuCategoryMenus(menuCategoryMenus));
-      //     thunkApi.dispatch(setAddons(addons));
-      //     thunkApi.dispatch(setAddonCategories(addonCategories));
-      //     thunkApi.dispatch(setTables(tables));
-      //     thunkApi.dispatch(setDisableLocationMenus(disabledLocationMenus));
-      //     thunkApi.dispatch(
-      //       setDisableLocationMenuCategories(disabledLocationMenuCategories)
-      //     );
-      //     thunkApi.dispatch(setMenuAddonCategory(menuAddonCategories));
-      //     thunkApi.dispatch(setOrders(orders));
-      //     thunkApi.dispatch(setCompany(company));
-      //     thunkApi.dispatch(setUser(user));
-      //     onSuccess && onSuccess();
-      //   }
-      const { movies, genres } = appData;
+      const { movies, genres, movieGenres } = appData;
+      console.log(movieGenres, "movie genre");
       onSuccess && onSuccess();
-      console.log(movies, genres);
-      if (role) {
+      if (role === "admin") {
         thunkApi.dispatch(setInit(true));
         thunkApi.dispatch(setMovies(movies));
         thunkApi.dispatch(setGenres(genres));
+        thunkApi.dispatch(setMovieGenres(movieGenres));
+      } else if (role === "user") {
+        thunkApi.dispatch(setInit(true));
+        thunkApi.dispatch(setMovies(movies));
+        thunkApi.dispatch(setMovieGenres(movieGenres));
       } else {
-        // console.log("user");
+        thunkApi.dispatch(setInit(true));
+        thunkApi.dispatch(setMovies(movies));
+        thunkApi.dispatch(setMovieGenres(movieGenres));
       }
     } catch (err) {
       onError && onError();

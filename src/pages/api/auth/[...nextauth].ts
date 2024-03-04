@@ -73,7 +73,6 @@ export const authOptions: NextAuthOptions = {
       if (account.provider === "google") {
         try {
           const { name, email } = user;
-          console.log("in google provider email", email);
           const existingUser = await db.user.findUnique({
             where: { email: email },
           });

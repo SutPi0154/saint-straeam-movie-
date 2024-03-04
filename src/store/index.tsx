@@ -6,6 +6,7 @@ import GenreReducer from "./slice/genreSlice";
 import MovieReducer from "./slice/movieSlice";
 import SnackbarReducer from "./slice/snackbarSlice";
 import UserReducer from "./slice/userSlice";
+import MovieGenreReducer from "./slice/movieGenresSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     app: AppReducer,
     movie: MovieReducer,
     genre: GenreReducer,
+    movieGenres: MovieGenreReducer,
   },
 });
 

@@ -18,8 +18,9 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import CheckBox from "./CheckBox";
-import Logo from "./Logo";
+import Logo from "../Logo";
 import SingInGoogle from "./SingInGoogle";
+import ButtonCompo from "../Button";
 
 interface DialogProps {
   openDialog: boolean;
@@ -73,11 +74,6 @@ const AuthDialog = ({
   ) => {
     event.preventDefault();
   };
-
-  // useEffect(() => {
-  //   setVariant(variant);
-  //   setFormData(defaultFormData);
-  // }, [variant, setVariant]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLabelValue(event.target.checked);
@@ -155,7 +151,7 @@ const AuthDialog = ({
     }
   };
 
-  const googleSignIn = async () => {
+  const credentialsSignIn = async () => {
     if (validationFormForLogin()) {
       const signInData = await signIn("credentials", {
         email: formData.email,
@@ -171,6 +167,13 @@ const AuthDialog = ({
       }
     }
   };
+
+  const authHandler = () => {
+    if (variant === "login") {
+      credentialsSignIn();
+    } else singUpHandler();
+  };
+  const googleSignIn = () => {};
 
   return (
     <Dialog
@@ -360,28 +363,19 @@ const AuthDialog = ({
         ) : (
           <></>
         )}
+
         <Box sx={{ width: "100%", mt: 2 }}>
-          <Button
+          <ButtonCompo
+            fullWidth={true}
+            text={variant === "login" ? "Login" : "Register"}
             disabled={variant === "register" && labelValue === false}
             color={"primary"}
             variant="contained"
-            onClick={() => {
-              if (variant === "login") {
-                googleSignIn();
-              } else singUpHandler();
-            }}
-            sx={{
-              width: "100%",
-              fontSize: 16,
-              borderRadius: 2,
-              py: 1,
-              fontWeight: 700,
-            }}
-          >
-            {variant === "login" ? "Login" : "Register"}
-          </Button>
+            onClick={authHandler}
+          />
         </Box>
         <SingInGoogle />
+
         <Box
           sx={{
             display: "flex",

@@ -14,17 +14,14 @@ const AdminLayout = ({ children }: Props) => {
   const { data: session, status } = useSession();
 
   const router = useRouter();
-  const { init } = useAppSelector((store) => store.app);
-  console.log(session?.user);
+
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (status === "loading") {
-      return;
-    }
-    if (session?.user && !init) {
+    if (session?.user) {
       dispatch(fetchAppData({ role: "admin" }));
     }
-  }, [session, init, dispatch, router, status]);
+  }, [session, dispatch, router, status]);
+  console.log("adim");
   return (
     <Box>
       <Box sx={{ display: "flex", alignItems: "stretch" }}>

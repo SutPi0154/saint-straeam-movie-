@@ -20,15 +20,7 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-// model Account {
-//   id Int @default(autoincrement()) @id
-// } 
-// model Session {
-//     id Int @default(autoincrement()) @id
-// }
-// model VerificationRequest {
-//   id Int @default(autoincrement()) @id 
-// }
+
 model Movie {
   id                 Int           @id @default(autoincrement())
   title              String
@@ -38,6 +30,7 @@ model Movie {
   duration           String
   releaseDate        String
   backgroundImageUrl String
+  imdb              Float  
   isArchived         Boolean       @default(false)
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt

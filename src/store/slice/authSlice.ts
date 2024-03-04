@@ -18,7 +18,6 @@ export const registerThunk = createAsyncThunk(
           body: JSON.stringify({ username, email, password }),
         });
         const { user } = await response.json();
-        console.log(user);
         onSuccess && onSuccess();
       } else {
         const response = await fetch(`${config.apiBaseUrl}/signIn`, {
@@ -27,7 +26,6 @@ export const registerThunk = createAsyncThunk(
           body: JSON.stringify({ username, email, password }),
         });
         const { user } = await response.json();
-        // console.log(user);
         onSuccess && onSuccess();
       }
     } catch (error) {
@@ -48,7 +46,6 @@ export const loginThunk = createAsyncThunk(
           body: JSON.stringify({ email, password, role: "admin" }),
         });
         const user = await response.json();
-        // console.log("user,", user);
         onSuccess && onSuccess();
       } else {
         const response = await fetch(`${config.apiBaseUrl}/signIn`, {
@@ -57,7 +54,6 @@ export const loginThunk = createAsyncThunk(
           body: JSON.stringify({ email, password, role: "user" }),
         });
         const user = await response.json();
-        console.log("user,", user);
         onSuccess && onSuccess();
       }
     } catch (error) {

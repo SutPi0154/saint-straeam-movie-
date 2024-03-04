@@ -13,3 +13,13 @@ body {
 .border-radius {
   border-radius: 100px !important;
 }
+
+.expandable-text-field {
+  overflow: hidden;
+  width: 48px; /* Width of the search icon initially */
+  transition: width 0.5s ease; /* Transition effect for width change */
+}
+
+.expandable-text-field.expanded {
+  width: 80%; /* Expanding to 100% when focused */
+}

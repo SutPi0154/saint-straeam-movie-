@@ -2,14 +2,23 @@ import { Box, Button, Typography } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import AuthDialog from "./Auth";
+import AuthDialog from "./auth/Auth";
 import Logo from "./Logo";
+import ButtonCompo from "./Button";
+
 
 const Navbar = () => {
   const { data: session, status } = useSession();
   const [openDialog, setOpenDialog] = useState(false);
   const [variant, setVariant] = useState("login");
-
+  const onClickSignUp = () => {
+    setOpenDialog(true);
+    setVariant("register");
+  };
+  const onClickLogin = () => {
+    setOpenDialog(true);
+    setVariant("login");
+  };
   return (
     <Box sx={{ mx: 4, pt: 4, flex: "0 0 20vh", height: "20vh" }}>
       <Box
@@ -47,7 +56,7 @@ const Navbar = () => {
           </Box>
         </Box>
         {session ? (
-          <Box>
+          <Box sx={{}}>
             <Button
               onClick={() => {
                 signOut({ callbackUrl: "/" });
@@ -57,23 +66,26 @@ const Navbar = () => {
             </Button>
           </Box>
         ) : (
-          <Box>
-            <Button
-              onClick={() => {
-                setOpenDialog(true);
-                setVariant("register");
-              }}
-            >
-              Sign Up
-            </Button>
-            <Button
-              onClick={() => {
-                setOpenDialog(true);
-                setVariant("login");
-              }}
-            >
-              Login
-            </Button>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            <ButtonCompo
+              fullWidth={false}
+              variant="outlined"
+              text="Sign up"
+              onClick={onClickSignUp}
+            />
+            <ButtonCompo
+              fullWidth={false}
+              variant="contained"
+              text="Login"
+              onClick={onClickLogin}
+            />
           </Box>
         )}
 
