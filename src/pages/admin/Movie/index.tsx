@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/store/hooks";
 import {
   Box,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -11,14 +12,17 @@ import {
   tableCellClasses,
 } from "@mui/material";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import React from "react";
+import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Genre, Movie, MovieGenres } from "@prisma/client";
+import IconButton from "@/components/IconButton";
 
 const MoviePage = () => {
   const movies = useAppSelector((store) => store.movie.items);
   const movieGenres = useAppSelector((store) => store.movieGenres.items);
-  console.log(movieGenres);
   const genres = useAppSelector((store) => store.genre.items);
 
   interface MovieWithGenres {
@@ -32,41 +36,43 @@ const MoviePage = () => {
   ): MovieWithGenres[] {
     const result: { [key: number]: MovieWithGenres } = {};
 
-    // Iterate through movieGenreRelations
-    movieGenreRelations.forEach((relation) => {
-      const { movieId, genreId } = relation;
+    movieGenreRelations &&
+      movieGenreRelations.forEach((relation) => {
+        const { movieId, genreId } = relation;
 
-      // Check if the movieId is in the result object
-      if (!result[movieId]) {
-        result[movieId] = {
-          movie: movies.find((movie) => movie.id === movieId) as Movie, // Ensure correct type
-          genres: [],
-        };
-      }
+        if (!result[movieId]) {
+          result[movieId] = {
+            movie: movies.find((movie) => movie.id === movieId) as Movie, // Ensure correct type
+            genres: [],
+          };
+        }
 
-      // Find the genre object and add it to the genres array
-      const genre = genres.find((genre) => genre.id === genreId);
-      if (genre) {
-        result[movieId].genres.push(genre);
-      }
-    });
+        // Find the genre object and add it to the genres array
+        const genre = genres.find((genre) => genre.id === genreId);
+        if (genre) {
+          result[movieId].genres.push(genre);
+        }
+      });
 
     return Object.values(result);
-  }
-
-  // Function to print the result
-  function printMoviesWithGenres(moviesWithGenres: MovieWithGenres[]) {
-    moviesWithGenres.forEach((movie) => {
-      const movieTitle = movie.movie.title; // Adjust property name to 'title'
-      const genreNames = movie.genres.map((genre) => genre.name).join(", ");
-      console.log(`${movieTitle} genres: ${genreNames}`);
-    });
   }
 
   // Get genres for each movie
   const moviesWithGenres = getGenresForMovies(movies, genres, movieGenres);
 
   console.log(moviesWithGenres);
+
+  const getDate = (date: any) => {
+    const originalDate = new Date(`${date}`);
+
+    // Format the date
+    return originalDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   return (
     <Box sx={{ mt: 2, ml: 4 }}>
       <TableContainer>
@@ -125,10 +131,10 @@ const MoviePage = () => {
               flexDirection: "column",
             }}
           >
-            {movies &&
-              movies.map((movie) => (
+            {moviesWithGenres &&
+              moviesWithGenres.map((movie) => (
                 <TableRow
-                  key={movie.id}
+                  key={movie.movie.id}
                   sx={{
                     borderRadius: 4,
                     height: 70,
@@ -138,9 +144,9 @@ const MoviePage = () => {
                     alignItems: "center",
                   }}
                 >
-                  <TableCell width={"5%"}>{movie.id}</TableCell>
+                  <TableCell width={"5%"}>{movie.movie.id}</TableCell>
                   <TableCell width={"30%"} align="left">
-                    {movie.title}
+                    {movie.movie.title}
                   </TableCell>
                   <TableCell
                     width={"10%"}
@@ -150,10 +156,58 @@ const MoviePage = () => {
                     <StarBorderIcon
                       sx={{ fontSize: 20, color: "primary.main" }}
                     />
-                    <Typography>{movie.imdb}</Typography>
+                    <Typography>{movie.movie.imdb}</Typography>
                   </TableCell>
                   <TableCell width={"10%"} align="left">
-                    {movie.isArchived === false ? "visible" : "hidden"}
+                    {movie.movie.isArchived === false ? "visible" : "hidden"}
+                  </TableCell>
+                  <TableCell width={"10%"} align="left">
+                    {movie.genres.map((genre) => (
+                      <Typography sx={{ fontSize: 12 }} key={genre.id}>
+                        {genre.name}
+                      </Typography>
+                    ))}
+                  </TableCell>
+                  <TableCell width={"10%"} align="left">
+                    {getDate(movie.movie.createdAt)}
+                  </TableCell>
+                  <TableCell
+                    sx={{ display: "flex", gap: 2 }}
+                    width={"10%"}
+                    align="left"
+                  >
+                    <IconButton
+                      width="35px"
+                      height="35px"
+                      bgcolor="#172e37"
+                      color="#29b474"
+                      onClick={() => {}}
+                      Icon={<LockOutlinedIcon sx={{ fontSize: 18 }} />}
+                    ></IconButton>
+                    <IconButton
+                      width="35px"
+                      height="35px"
+                      bgcolor="#2d302d"
+                      color="#f5bc13"
+                      onClick={() => {}}
+                      Icon={<VisibilityOutlinedIcon sx={{ fontSize: 18 }} />}
+                    ></IconButton>
+                    <IconButton
+                      width="35px"
+                      height="35px"
+                      color="#eb5757"
+                      bgcolor="#2b2534"
+                      onClick={() => {}}
+                      Icon={<DeleteOutlinedIcon sx={{ fontSize: 18 }} />}
+                    ></IconButton>
+                    <IconButton
+                      width="35px"
+                      height="35px"
+                      color="#2e7ce5"
+                      bgcolor="#182943"
+                      onClick={() => {}}
+                      Icon={<CreateOutlinedIcon sx={{ fontSize: 18 }} />}
+                    ></IconButton>
                   </TableCell>
                 </TableRow>
               ))}

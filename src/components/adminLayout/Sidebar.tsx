@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Logo from "../Logo";
+import IconButton from "../IconButton";
 
 const Sidebar = () => {
   const { data: session } = useSession();
@@ -55,14 +56,17 @@ const Sidebar = () => {
               </Typography>
             </Box>
             <Box>
-              <Button
+              <IconButton
+                width="45px"
+                height="45px"
+                color="primary"
+                bgcolor="#111c18"
+                Icon={<LoginIcon />}
                 onClick={async () => {
                   await signOut();
                   router.push("/");
                 }}
-              >
-                <LoginIcon />
-              </Button>
+              />
             </Box>
           </Box>
           <Divider />
