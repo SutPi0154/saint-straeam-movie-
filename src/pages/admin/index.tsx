@@ -1,7 +1,13 @@
 import ButtonCompo from "@/components/Button";
+import { useAppSelector } from "@/store/hooks";
 import { Box, Button, Divider, Typography } from "@mui/material";
+import MoviePage from "./Movie";
+// import Movie from "./Movie";
 
-const AdminPage = () => {
+const AdminPage: any = () => {
+  const movies = useAppSelector((store) => store.movie.items);
+
+  console.log(movies, "from admin apge");
   return (
     <>
       <Box
@@ -20,23 +26,7 @@ const AdminPage = () => {
         </Box>
       </Box>
       <Divider sx={{ width: "95%" }} />
-
-      <Box sx={{ display: "flex", justifyContent: "center", m: 2 }}>
-        <Box
-          sx={{
-            display: "flex",
-            bgcolor: "warning.main",
-            borderColor: "",
-            width: "100%",
-            justifyContent: "space-around",
-          }}
-        >
-          <Box sx={{ width: "20%", height: 50, bgcolor: "" }}>dfsdfaflj</Box>
-          <Box sx={{ width: "20%", height: 50, bgcolor: "red" }}>dfsdfaflj</Box>
-          <Box sx={{ width: "20%", height: 50, bgcolor: "red" }}>dfsdfaflj</Box>
-          <Box sx={{ width: "20%", height: 50, bgcolor: "red" }}>dfsdfaflj</Box>
-        </Box>
-      </Box>
+      <MoviePage />
     </>
   );
 };

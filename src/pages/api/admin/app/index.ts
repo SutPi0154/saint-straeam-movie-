@@ -229,6 +229,8 @@ export default async function handler(
         { movieId: moviesAllDb[8].id, genreId: genres[6].id },
         { movieId: moviesAllDb[8].id, genreId: genres[0].id },
         //10 fury ()
+        { movieId: moviesAllDb[9].id, genreId: genres[0].id },
+        { movieId: moviesAllDb[9].id, genreId: genres[6].id },
         // Add other associations as needed
       ];
       await prisma.movieGenres.createMany({
