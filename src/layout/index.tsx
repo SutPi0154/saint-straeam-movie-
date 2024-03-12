@@ -1,9 +1,6 @@
 import AdminLayout from "@/components/adminLayout/AdminLayout";
 import MovieAppLayout from "@/components/moviesLayout/MovieAppLayout";
-import Navbar from "@/components/Navbar";
-import { useAppDispatch } from "@/store/hooks";
-import { fetchAppData } from "@/store/slice/appSlice";
-import { Box } from "@mui/material";
+import NoAuthLayout from "@/components/NoAuthLayout";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
@@ -16,8 +13,7 @@ const Layout = ({ children }: Props) => {
   const { data: session } = useSession();
   const adminPage = router.pathname.includes("/admin");
   const moviePage = router.pathname.includes("/movies");
-  const dispatch = useAppDispatch();
-  console.log(session);
+  const isNoAuthLayout = router.pathname.includes("/");
   useEffect(() => {
     if (session && session.user) {
       //@ts-ignore
@@ -37,21 +33,15 @@ const Layout = ({ children }: Props) => {
     }
   }, [router, session, roleState]);
 
-  useEffect(() => {
-    dispatch(fetchAppData({}));
-  }, []);
-
   if (adminPage) {
     return <AdminLayout>{children}</AdminLayout>;
   }
   if (moviePage) {
     return <MovieAppLayout>{children}</MovieAppLayout>;
   }
-  return (
-    <Box sx={{ height: "100vh", bgcolor: "info.main" }}>
-      <Navbar />
-    </Box>
-  );
+  if (isNoAuthLayout) {
+    return <NoAuthLayout>{children}</NoAuthLayout>;
+  }
 };
 
 export default Layout;

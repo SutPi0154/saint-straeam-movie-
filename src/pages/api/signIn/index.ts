@@ -10,11 +10,6 @@ export default async function handler(
 
   if (method === "POST") {
     const { email, username, password } = req.body;
-    console.log("form sign in api ", email, password);
-    // Validate role to prevent unauthorized role assignment
-    // if (role && !["user", "admin"].includes(role)) {
-    //   return res.status(400).send("Invalid role");
-    // }
 
     const existingUser = await db.user.findUnique({
       where: { email: email },

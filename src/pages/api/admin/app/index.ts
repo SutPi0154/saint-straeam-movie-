@@ -10,12 +10,17 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const method = req.method;
+  console.log(method);
 
   if (method === "GET") {
-    const admin = req.query;
-    if (!admin) {
-      return res.status(400).send("Unauthorized.");
+    const { role } = req.query;
+    console.log(role);
+    if (!role) {
+      return res
+        .status(400)
+        .send("Invalid request: 'admin' parameter is missing.");
     }
+
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
       return res.status(401).send("Unauthorized.");
@@ -244,13 +249,18 @@ export default async function handler(
       });
     } else {
       const genreAllDB = await prisma.genre.findMany({});
-      const moviesAllDb = await prisma.movie.findMany({});
+      const movies = await prisma.movie.findMany({
+        take: Number(2),
+        // Add any other necessary filters or sorting options
+      });
+
       const moviesGenre = await prisma.movieGenres.findMany({});
 
       return res.status(200).json({
-        movies: moviesAllDb,
+        movies,
         genres: genreAllDB,
         movieGenres: moviesGenre,
+        page: 1,
       });
     }
   }

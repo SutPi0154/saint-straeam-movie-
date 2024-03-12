@@ -1,7 +1,9 @@
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   Box,
   Button,
+  Pagination,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -14,54 +16,113 @@ import {
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import React from "react";
+import React, { useEffect } from "react";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { Genre, Movie, MovieGenres } from "@prisma/client";
 import IconButton from "@/components/IconButton";
+import { paginationPage } from "@/store/slice/movieSlice";
 
+interface MovieWithGenres {
+  movie: Movie;
+  genres: Genre[];
+}
 const MoviePage = () => {
   const movies = useAppSelector((store) => store.movie.items);
   const movieGenres = useAppSelector((store) => store.movieGenres.items);
   const genres = useAppSelector((store) => store.genre.items);
+  const dispatch = useAppDispatch();
+  const totalPages = useAppSelector((state) => state.movie.totalPages);
+  const [page, setPage] = React.useState(1);
 
-  interface MovieWithGenres {
-    movie: Movie;
-    genres: Genre[];
-  }
-  function getGenresForMovies(
-    movies: Movie[],
-    genres: Genre[],
-    movieGenreRelations: MovieGenres[]
-  ): MovieWithGenres[] {
-    const result: { [key: number]: MovieWithGenres } = {};
+  // const handleChange = (event: React.ChangeEvent<unknown>, newPage: any) => {
+  //   setPage(newPage); // Update the local state
+  //   dispatch(paginationPage({ page, pageSize: 2 }));
+  // };
+  const handleChange = (event: React.ChangeEvent<unknown>, newPage: any) => {
+    setPage(newPage); // Update the local state
+    dispatch(paginationPage({ page: newPage, pageSize: 2 }));
+  };
 
-    movieGenreRelations &&
-      movieGenreRelations.forEach((relation) => {
-        const { movieId, genreId } = relation;
+  // useEffect(() => {
 
-        if (!result[movieId]) {
-          result[movieId] = {
-            movie: movies.find((movie) => movie.id === movieId) as Movie, // Ensure correct type
-            genres: [],
-          };
-        }
+  // }, [page, dispatch]);
 
-        // Find the genre object and add it to the genres array
-        const genre = genres.find((genre) => genre.id === genreId);
-        if (genre) {
-          result[movieId].genres.push(genre);
-        }
-      });
+  // console.log(movies, "form serer");
 
-    return Object.values(result);
-  }
+  // function getGenresForMovies(
+  //   movies: Movie[],
+  //   genres: Genre[],
+  //   movieGenreRelations: MovieGenres[]
+  // ): MovieWithGenres[] {
+  //   const result: { [key: number]: MovieWithGenres } = {};
+
+  //   movieGenreRelations &&
+  //     movieGenreRelations.forEach((relation) => {
+  //       const { movieId, genreId } = relation;
+
+  //       if (!result[movieId]) {
+  //         result[movieId] = {
+  //           movie: movies.find((movie) => movie.id === movieId) as Movie, // Ensure correct type
+  //           genres: [],
+  //         };
+  //       }
+
+  //       // Find the genre object and add it to the genres array
+  //       const genre = genres.find((genre) => genre.id === genreId);
+  //       if (genre) {
+  //         result[movieId].genres.push(genre);
+  //       }
+  //     });
+
+  //   return Object.values(result);
+  // }
+  // function getGenresForMovies(
+  //   movies: Movie[],
+  //   genres: Genre[],
+  //   movieGenreRelations: MovieGenres[],
+  //   currentPage: number,
+  //   pageSize: number
+  // ): MovieWithGenres[] {
+  //   const result: { [key: number]: MovieWithGenres } = {};
+
+  //   const startIndex = (currentPage - 1) * pageSize;
+
+  //   movieGenreRelations &&
+  //     movieGenreRelations
+  //       .filter((relation) => {
+  //         const { movieId } = relation;
+  //         return movieId >= startIndex && movieId < startIndex + pageSize;
+  //       })
+  //       .forEach((relation) => {
+  //         const { movieId, genreId } = relation;
+
+  //         if (!result[movieId]) {
+  //           result[movieId] = {
+  //             movie: movies.find((movie) => movie.id === movieId) as Movie,
+  //             genres: [],
+  //           };
+  //         }
+
+  //         // Find the genre object and add it to the genres array
+  //         const genre = genres.find((genre) => genre.id === genreId);
+  //         if (genre) {
+  //           result[movieId].genres.push(genre);
+  //         }
+  //       });
+
+  //   return Object.values(result);
+  // }
 
   // Get genres for each movie
-  const moviesWithGenres = getGenresForMovies(movies, genres, movieGenres);
-
-  console.log(moviesWithGenres);
-
+  // const moviesWithGenres = getGenresForMovies(
+  //   movies,
+  //   genres,
+  //   movieGenres,
+  //   totalPages,
+  //   page
+  // );
+  // console.log(moviesWithGenres);
   const getDate = (date: any) => {
     const originalDate = new Date(`${date}`);
 
@@ -131,10 +192,10 @@ const MoviePage = () => {
               flexDirection: "column",
             }}
           >
-            {moviesWithGenres &&
-              moviesWithGenres.map((movie) => (
+            {movies &&
+              movies.map((movie) => (
                 <TableRow
-                  key={movie.movie.id}
+                  key={movie.id}
                   sx={{
                     borderRadius: 4,
                     height: 70,
@@ -144,9 +205,9 @@ const MoviePage = () => {
                     alignItems: "center",
                   }}
                 >
-                  <TableCell width={"5%"}>{movie.movie.id}</TableCell>
+                  <TableCell width={"5%"}>{movie.id}</TableCell>
                   <TableCell width={"30%"} align="left">
-                    {movie.movie.title}
+                    {movie.title}
                   </TableCell>
                   <TableCell
                     width={"10%"}
@@ -156,20 +217,20 @@ const MoviePage = () => {
                     <StarBorderIcon
                       sx={{ fontSize: 20, color: "primary.main" }}
                     />
-                    <Typography>{movie.movie.imdb}</Typography>
+                    <Typography>{movie.imdb}</Typography>
                   </TableCell>
                   <TableCell width={"10%"} align="left">
-                    {movie.movie.isArchived === false ? "visible" : "hidden"}
+                    {movie.isArchived === false ? "visible" : "hidden"}
                   </TableCell>
                   <TableCell width={"10%"} align="left">
-                    {movie.genres.map((genre) => (
+                    {/* {.genres.map((genre) => (
                       <Typography sx={{ fontSize: 12 }} key={genre.id}>
                         {genre.name}
                       </Typography>
-                    ))}
+                    ))} */}
                   </TableCell>
                   <TableCell width={"10%"} align="left">
-                    {getDate(movie.movie.createdAt)}
+                    {getDate(movie.createdAt)}
                   </TableCell>
                   <TableCell
                     sx={{ display: "flex", gap: 2 }}
@@ -211,6 +272,27 @@ const MoviePage = () => {
                   </TableCell>
                 </TableRow>
               ))}
+            <TableRow
+              sx={{
+                borderRadius: 4,
+                height: 70,
+                backgroundColor: "#151f30",
+                mb: 1,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <TableCell sx={{ width: "75%" }}></TableCell>
+              <TableCell sx={{ width: "25%" }}>
+                <Stack spacing={2}>
+                  <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={handleChange}
+                  />
+                </Stack>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </TableContainer>

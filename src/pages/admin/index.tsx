@@ -5,9 +5,6 @@ import MoviePage from "./Movie";
 // import Movie from "./Movie";
 
 const AdminPage: any = () => {
-  const movies = useAppSelector((store) => store.movie.items);
-
-  console.log(movies, "from admin apge");
   return (
     <>
       <Box

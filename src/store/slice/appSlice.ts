@@ -13,16 +13,18 @@ export const fetchAppData = createAsyncThunk(
   "app/appSlice",
   async (options: GetAppDataOptions, thunkApi) => {
     const { onSuccess, onError, role } = options;
-    console.log("inside appslice");
+
     try {
       const appDataUrl = role
         ? `${config.adminApiUrl}/app?role=${role}`
         : `${config.costumerApiUrl}/app`;
-      const response = await fetch(appDataUrl);
+      const response = await fetch(appDataUrl, {
+        method: "GET",
+      });
       const appData = await response.json();
 
       const { movies, genres, movieGenres } = appData;
-      console.log(movieGenres, "movie genre");
+      console.log(movies);
       onSuccess && onSuccess();
       if (role === "admin") {
         thunkApi.dispatch(setInit(true));

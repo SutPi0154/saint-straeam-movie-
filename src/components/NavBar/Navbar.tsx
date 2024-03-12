@@ -2,10 +2,10 @@ import { Box, Button, Typography } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import AuthDialog from "./auth/Auth";
-import Logo from "./Logo";
-import ButtonCompo from "./Button";
-
+import AuthDialog from "../auth/Auth";
+import Logo from "../Logo";
+import ButtonCompo from "../Button";
+import Profile from "./Profile";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -57,13 +57,14 @@ const Navbar = () => {
         </Box>
         {session ? (
           <Box sx={{}}>
-            <Button
+            {/* <Button
               onClick={() => {
                 signOut({ callbackUrl: "/" });
               }}
             >
               Logout
-            </Button>
+            </Button> */}
+            <Profile />
           </Box>
         ) : (
           <Box

@@ -1,5 +1,6 @@
 export interface AppSlice {
   init: boolean;
+
   isLoading: boolean;
   isError: Error | null;
 }

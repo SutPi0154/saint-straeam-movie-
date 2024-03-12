@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Logo from "../Logo";
 import IconButton from "../IconButton";
+import PersonIcon from "../PersonIcon";
 
 const Sidebar = () => {
   const { data: session } = useSession();
@@ -35,14 +36,9 @@ const Sidebar = () => {
               alignItems: "center",
             }}
           >
-            <Image
-              src={"/person.jpg"}
-              width={0}
-              height={0}
-              sizes="100vw"
-              style={{ width: "20%", height: "20%", borderRadius: 10 }}
-              alt="Picture of the author"
-            />
+            <Box sx={{ bgcolor: "" }}>
+              <PersonIcon borderRadius="20%" />
+            </Box>
             <Box>
               <Typography sx={{ fontSize: 12 }}>Admin</Typography>
               <Typography

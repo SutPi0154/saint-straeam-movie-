@@ -21,7 +21,6 @@ const AdminLayout = ({ children }: Props) => {
       dispatch(fetchAppData({ role: "admin" }));
     }
   }, [session, dispatch, router, status]);
-  console.log("adim");
   return (
     <Box>
       <Box sx={{ display: "flex", alignItems: "stretch" }}>
