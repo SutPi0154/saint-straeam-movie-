@@ -1,28 +1,24 @@
 import ButtonCompo from "@/components/Button";
 import { useAppSelector } from "@/store/hooks";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import MoviePage from "./Movie";
-// import Movie from "./Movie";
+import { useRouter } from "next/router";
+import NavForAdmin from "@/components/adminLayout/NavForAdmin";
 
 const AdminPage: any = () => {
+  const router = useRouter();
+  const handleButtonClick = () => {
+    const subRoute = "Add-item";
+    router.push(`/admin/${subRoute}`);
+  };
+
   return (
     <>
-      <Box
-        sx={{ display: "flex", justifyContent: "space-between", my: 2, mx: 4 }}
-      >
-        <Box>
-          <Typography sx={{ fontSize: 30 }}>Dashboard</Typography>
-        </Box>
-        <Box>
-          <ButtonCompo
-            text="Add Item"
-            variant="contained"
-            onClick={() => {}}
-            fullWidth={false}
-          />
-        </Box>
-      </Box>
-      <Divider sx={{ width: "95%" }} />
+      <NavForAdmin
+        title={"DashBoard"}
+        buttonText={"Add Item"}
+        button={() => handleButtonClick()}
+      />
       <MoviePage />
     </>
   );

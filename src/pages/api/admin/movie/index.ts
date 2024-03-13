@@ -14,7 +14,6 @@ export default async function handler(
       skip: (Number(page) - 1) * Number(pageSize),
       take: Number(pageSize),
     });
-    // console.log(movies);
     const totalMovies = await prisma.movie.count();
     return res.json({ movies, totalMovies });
   }

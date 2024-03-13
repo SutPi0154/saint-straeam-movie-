@@ -1,7 +1,6 @@
 import LoginIcon from "@mui/icons-material/Login";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Logo from "../Logo";
@@ -18,7 +17,7 @@ const Sidebar = () => {
       >
         <Box sx={{ width: "100%" }}>
           <Link href={"/"} style={{ color: "white", textDecoration: "none" }}>
-            <Box sx={{ display: "flex", my: 4, mx: 2 }}>
+            <Box sx={{ display: "flex", mt: 2, my: 2.9, mx: 2 }}>
               <Logo />
               <Typography sx={{ fontSize: 25, fontFamily: "Antonio" }}>
                 Saint Stream

@@ -17,6 +17,7 @@ const MovieAppLayout = ({ children }: Props) => {
       dispatch(fetchAppData({ role: "user" }));
     }
   }, [session]);
+  console.log("movie layout");
 
   return (
     <Box sx={{ height: "100vh", bgcolor: "info.main" }}>

@@ -11,16 +11,21 @@ interface Props {
 }
 
 const AdminLayout = ({ children }: Props) => {
-  const { data: session, status } = useSession();
-
+  const { data: session } = useSession();
   const router = useRouter();
-
+  const init = useAppSelector((store) => store.app.init);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    if (session?.user) {
+    if (session?.user && !init) {
       dispatch(fetchAppData({ role: "admin" }));
     }
-  }, [session, dispatch, router, status]);
+    if (session?.user && !router.pathname.startsWith("/admin")) {
+      router.push("/admin");
+    }
+  }, [init, router, session]);
+
+  console.log(init);
   return (
     <Box>
       <Box sx={{ display: "flex", alignItems: "stretch" }}>

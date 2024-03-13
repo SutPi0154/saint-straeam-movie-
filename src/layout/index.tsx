@@ -11,32 +11,37 @@ const Layout = ({ children }: Props) => {
   const [roleState, setRole] = useState("");
   const router = useRouter();
   const { data: session } = useSession();
-  const adminPage = router.pathname.includes("/admin");
-  const moviePage = router.pathname.includes("/movies");
+  console.log(session);
   const isNoAuthLayout = router.pathname.includes("/");
   useEffect(() => {
-    if (session && session.user) {
-      //@ts-ignore
-      const { role } = session.user;
-      if (role === "ADMIN") {
-        if (router.pathname !== "/admin") {
-          setRole("admin");
-          router.push("/admin");
-        }
-      } else if (role === "user" && !(router.pathname === "/movies")) {
+    if (session) {
+      // @ts-ignore
+      const roleResult = session.user.role;
+      const role = roleResult.toUpperCase();
+      console.log(role);
+      if (!session && !(router.pathname === "/")) {
+        router.push("/");
+      } else if (role === "ADMIN") {
+        setRole("admin");
+      }
+      if (role === "ADMIN" && !router.pathname.startsWith("/admin")) {
+        router.push("/admin");
+      } else if (role === "USER") {
         setRole("user");
+      }
+      if (role === "USER" && router.pathname !== "/movies") {
+        console.log("route to movies");
         router.push("/movies");
       }
     }
-    if (!session && !(router.pathname === "/")) {
-      router.push("/");
-    }
   }, [router, session, roleState]);
 
-  if (adminPage) {
+  console.log("rolestate", roleState);
+
+  if (roleState === "admin") {
     return <AdminLayout>{children}</AdminLayout>;
   }
-  if (moviePage) {
+  if (roleState === "user") {
     return <MovieAppLayout>{children}</MovieAppLayout>;
   }
   if (isNoAuthLayout) {

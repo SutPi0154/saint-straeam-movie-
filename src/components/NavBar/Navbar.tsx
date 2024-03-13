@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from "@mui/material";
-import { signOut, useSession } from "next-auth/react";
+import { Box, Typography } from "@mui/material";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import AuthDialog from "../auth/Auth";
@@ -19,6 +19,7 @@ const Navbar = () => {
     setOpenDialog(true);
     setVariant("login");
   };
+
   return (
     <Box sx={{ mx: 4, pt: 4, flex: "0 0 20vh", height: "20vh" }}>
       <Box
